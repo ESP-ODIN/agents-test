@@ -5,10 +5,10 @@ import subprocess
 import sys
 from pathlib import Path
 
-from google import genai 
+from google import genai
 from google.genai import types
 
-MODEL = "gemini-3.8-flash"  # à adapter selon les modèles visibles dans Google AI Studio
+MODEL = "gemini-3.6-flash"  # à adapter selon les modèles visibles dans Google AI Studio
 
 SYSTEM_PROMPT = (
     "Tu rédiges des changelogs clairs et concis, en Markdown, "
