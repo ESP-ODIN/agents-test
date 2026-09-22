@@ -32,7 +32,7 @@ Dépendances système : `curl`, `grep`, `sed`, `awk`. Config en TOML (`agent.tom
 ## Installation
 
 ```bash
-cd agents-test
+cd agent-promotion
 cp .env.example .env
 ```
 
@@ -70,7 +70,7 @@ crontab -e
 ```
 
 ```
-0 * * * * cd /chemin/vers/agents-test && ./watcher.sh >> watcher.log 2>&1
+0 * * * * cd /chemin/vers/agents-test/agent-promotion && ./watcher.sh >> watcher.log 2>&1
 ```
 
 Le script charge `.env` automatiquement.
