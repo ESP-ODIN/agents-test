@@ -1,0 +1,12 @@
+name = "changelog-agent"
+version = "1.0.0"
+language = "python"
+description = "Génère un CHANGELOG.md à partir de l'historique git d'un dépôt local, via Gemini"
+entrypoint = "python agent.py"
+requires = ["GEMINI_API_KEY"]
+permissions = ["internet", "read_files", "write_files", "execute_code"]
+changelog = "1.0.0 - Version initiale"
+
+[docker]
+dockerfile = "./Dockerfile"
+ 
