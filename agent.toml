@@ -1,0 +1,89 @@
+# ============================================================
+# student_deals_agent.toml
+# Agent simple et 100% gratuit de veille de bons plans étudiants.
+# - Pas de LLM payant : filtrage par mots-clés (gratuit, aucune
+#   clé API requise). Une étape IA locale gratuite (Ollama) est
+#   proposée en option si tu veux un tri plus intelligent.
+# - Sources : flux RSS + pages Dealabs / UNiDAYS.
+# - Envoi mail : Gmail SMTP (destinataire Epitech).
+# ============================================================
+
+[agent]
+name        = "student_deals_watcher"
+role        = "Veilleur de bons plans étudiants"
+goal        = "Repérer les nouvelles offres étudiantes dans les flux RSS suivis et envoyer un email dès qu'une offre correspond aux mots-clés."
+language    = "fr"
+
+# ------------------------------------------------------------
+# Pas de LLM par défaut = agent 100% gratuit, aucune clé API
+# à payer. Laisse use_llm = false pour un simple filtre par
+# mots-clés. Si tu veux un tri plus fin, passe use_llm = true
+# et utilise un modèle local gratuit via Ollama (aucun coût,
+# tourne sur ta machine).
+# ------------------------------------------------------------
+[filtering]
+use_llm  = false
+provider = "ollama"        # utilisé seulement si use_llm = true
+model    = "llama3.2:3b"   # modèle gratuit, local, léger
+
+# ------------------------------------------------------------
+# Déclenchement : vérifie les flux toutes les X minutes,
+# n'envoie que les offres jamais vues (déduplication simple).
+# ------------------------------------------------------------
+[trigger]
+poll_interval_minutes = 60
+dedup_store            = "seen_deals.json"   # petit fichier local, pas de base de données
+
+# ------------------------------------------------------------
+# Sources : flux RSS Dealabs + pages de recherche (le RSS
+# filtré par mot-clé n'existe plus chez Dealabs).
+# ------------------------------------------------------------
+[source]
+rss_feeds = [
+    "https://www.dealabs.com/rss/tous",
+    "https://www.dealabs.com/rss/hot",
+]
+search_pages = [
+    "https://www.dealabs.com/search?q=etudiant",
+    "https://www.dealabs.com/search?q=%C3%A9tudiant",
+]
+# UNiDAYS FR — offres déjà 100 % étudiantes (pas de filtre mots-clés).
+unidays_pages = [
+    "https://www.myunidays.com/FR/fr-FR/lists/automated_just_in",
+    "https://www.myunidays.com/FR/fr-FR",
+]
+keywords = [
+    "étudiant",
+    "etudiant",
+    "étudiante",
+    "etudiante",
+    "carte étudiante",
+    "réduction étudiant",
+    "bon plan étudiant",
+    "tarif étudiant",
+    "student",
+    "ISIC",
+    "Crous",
+    "-26 ans",
+    "moins de 26",
+]
+
+# ------------------------------------------------------------
+# Envoi mail via Gmail SMTP. Le destinataire est ton Epitech.
+# Dans .env : GMAIL_ADDRESS + GMAIL_APP_PASSWORD (mot de passe
+# d'application Google, pas ton mot de passe Gmail normal).
+# ------------------------------------------------------------
+[email]
+smtp_host = "smtp.gmail.com"
+smtp_port = 587
+username  = "${GMAIL_ADDRESS}"
+password  = "${GMAIL_APP_PASSWORD}"
+to        = "shirel.sabbah@epitech.eu"
+subject   = "Nouveau bon plan etudiant : {{ deal_title }}"
+body      = """
+{{ deal_title }}
+
+{{ deal_description }}
+
+Lien : {{ deal_url }}
+"""
