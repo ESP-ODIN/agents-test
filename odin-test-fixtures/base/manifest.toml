@@ -1,0 +1,17 @@
+manifest_version = "1.0"
+mcp_dependencies = []
+
+[agent_config]
+id = "weather-digest-v1"
+name = "Weather Digest"
+version = "1.0.0"
+author_id = "odin_test_fixtures"
+description = "Génère un court résumé météo du matin. Agent de test ODIN (contrôle propre)."
+
+[runtime]
+type = "docker"
+image_uri = "registry.agenthub.io/agents/weather-digest:1.0.0"
+
+[runtime.resource_limits]
+cpu = "0.5"
+memory = "256Mi"

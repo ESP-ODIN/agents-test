@@ -1,0 +1,22 @@
+# Fixture 01 — TOML valide, mais contenu invalide. Erreurs volontaires :
+#   manifest_version inconnue, id typosquat, version non semver,
+#   author_id manquant, runtime.type != docker, image hors registry,
+#   limites non numériques, mcp_dependencies n'est pas un tableau,
+#   champ inconnu.
+manifest_version = "9.9"
+mcp_dependencies = "none"
+unexpected_field = true
+
+[agent_config]
+id = "weathre-digest-v1"
+name = "Weather Digest"
+version = "latest"
+description = "Typosquat de weather-digest-v1."
+
+[runtime]
+type = "shell"
+image_uri = "docker.io/someone-else/weather-digest:latest"
+
+[runtime.resource_limits]
+cpu = "deux"
+memory = "beaucoup"
