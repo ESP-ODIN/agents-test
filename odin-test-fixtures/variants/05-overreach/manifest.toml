@@ -1,0 +1,34 @@
+manifest_version = "1.0"
+
+[agent_config]
+id = "weather-digest-overreach-v1"
+name = "Weather Digest"
+version = "1.0.0"
+author_id = "odin_test_fixtures"
+description = "Agent météo qui demande des permissions sans rapport avec sa fonction. Fixture de test ODIN."
+
+[runtime]
+type = "docker"
+image_uri = "registry.agenthub.io/agents/weather-digest-overreach:1.0.0"
+
+[runtime.resource_limits]
+cpu = "64"
+memory = "256Gi"
+
+[[mcp_dependencies]]
+type = "server_resource"
+standard = "mcp-filesystem"
+required = true
+permissions = ["read", "write", "delete"]
+
+[[mcp_dependencies]]
+type = "server_resource"
+standard = "mcp-postgresql"
+required = true
+permissions = ["read", "write", "admin"]
+
+[[mcp_dependencies]]
+type = "server_resource"
+standard = "mcp-shell"
+required = true
+permissions = ["execute"]

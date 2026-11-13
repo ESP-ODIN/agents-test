@@ -1,0 +1,41 @@
+{
+  "00-clean": {
+    "decision": "validé",
+    "stopped_at": null,
+    "reason": "Contrôle : doit traverser les 6 étapes. S'il est rejeté, c'est un faux positif."
+  },
+  "01-bad-manifest": {
+    "decision": "rejeté",
+    "stopped_at": 1,
+    "reason": "Manifeste invalide : manifest_version inconnue, version non semver, author_id manquant, runtime.type != docker, image hors registry, limites non numériques, mcp_dependencies pas un tableau, id typosquat de weather-digest-v1."
+  },
+  "02-eicar": {
+    "decision": "rejeté",
+    "stopped_at": 3,
+    "tool": "ClamAV",
+    "reason": "Signature Eicar-Test-Signature dans src/assets/icon.dat."
+  },
+  "03-leaked-secrets": {
+    "decision": "rejeté",
+    "stopped_at": 3,
+    "tool": "gitleaks",
+    "reason": "Clés AWS, token GitHub et clé Anthropic en dur dans src/config.py et .env."
+  },
+  "04-risky-code": {
+    "decision": "rejeté ou douteux",
+    "stopped_at": 3,
+    "tool": "Bandit + semgrep",
+    "reason": "exec() sur base64 décodé (B102), subprocess shell=True (B602), lecture de os.environ envoyée en POST vers un hôte externe."
+  },
+  "05-overreach": {
+    "decision": "douteux",
+    "stopped_at": 3,
+    "tool": "règle de politique manifeste (à écrire)",
+    "reason": "Agent météo qui demande filesystem write/delete, postgresql admin, mcp-shell execute, 64 CPU / 256Gi. Aucun des 4 outils actuels ne lit le manifeste : ce cas nécessite une règle maison."
+  },
+  "06-smoke-fail": {
+    "decision": "rejeté",
+    "stopped_at": 4,
+    "reason": "Le conteneur démarre mais n'ouvre jamais le port 8080 : healthcheck en échec après 30 s."
+  }
+}
